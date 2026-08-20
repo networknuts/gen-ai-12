@@ -1,0 +1,46 @@
+from paramiko.client import SSHClient
+from paramiko.client import AutoAddPolicy
+import paramiko 
+
+# CREATE A PYTHON SSH FUNCTION
+def run_ssh_command(host,username,password=None,key_file=None,command="id",timeout=10):
+    """
+    Connect to a remote server over SSH and run a command.
+
+    Args:
+        host: VM IP or the hostname
+        username: SSH username
+        password: SSH password (Optional)
+        key_file: SSH Private Key (Optional)
+        timeout: Connection timeout of 10 seconds (default)
+    """
+    client = SSHClient()
+    client.set_missing_host_key_policy(AutoAddPolicy)
+    try:
+        if key_file:
+            private_key = paramiko.RSAKey.from_private_key_file(key_file)
+
+            client.connect(
+                hostname=host,
+                username=username,
+                pkey=private_key,
+                timeout=timeout
+            )
+        else:
+            client.connect(
+                hostname=host,
+                username=username,
+                password=password,
+                timeout=timeout
+            )
+        stdin, stdout, stderr = client.exec_command(command)
+        output = stdout.read().decode()
+        error = stderr.read().decode()
+
+        return {
+            "host": host,
+            "stdout": output.strip(),
+            "error": error.strip()
+        }
+    except Exception as e:
+        print(f"Error: {e}")
