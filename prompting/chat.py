@@ -13,4 +13,4 @@ response = client.responses.create(
 )
 
 # STEP 3: PRINT OUTPUT
-print(response.output_text)
+print(response)
