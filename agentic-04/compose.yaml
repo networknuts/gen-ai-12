@@ -1,0 +1,10 @@
+services:
+  neo4j:
+    image: docker.io/library/neo4j:latest
+    container_name: neo4j
+    ports:
+      - "7687:7687" # PROGRAMMTIC ACCESS
+      - "7474:7474" # GUI ACCESS
+
+# default username - neo4j
+# default password - neo4j
