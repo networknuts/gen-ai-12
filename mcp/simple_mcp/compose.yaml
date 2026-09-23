@@ -1,0 +1,12 @@
+services:
+  db:
+    image: docker.io/library/postgres:18
+    environment:
+      POSTGRES_USER: banking
+      POSTGRES_PASSWORD: banking_demo
+      POSTGRES_DB: banking
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/01-banking.sql
+    ports:
+      - "5432:5432"
+    
